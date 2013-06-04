@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Minimal AppLaud App</title>
+
+	  <script type="text/javascript" charset="utf-8" src="cordova-2.7.0.js"></script>
+	  <script type="text/javascript" charset="utf-8">
+      
+        var onDeviceReady = function() {
+            document.getElementById("devready").innerHTML = "Listo.";
+            
+            var networkState = navigator.connection.type;
+
+    		var states = {};
+    		states[Connection.UNKNOWN]  = 'Conexion desconocida';
+    		states[Connection.ETHERNET] = 'Ethernet';
+    		states[Connection.WIFI]     = 'WiFi';
+    		states[Connection.CELL_2G]  = 'Celular 2G';
+    		states[Connection.CELL_3G]  = 'Celular 3G';
+    		states[Connection.CELL_4G]  = 'Celular 4G';
+    		states[Connection.CELL]     = 'Conexion generica de celular';
+    		states[Connection.NONE]     = 'Sin conexion';
+    		
+    		document.getElementById("conexion").innerHTML = 'Conexion: ' + states[networkState];
+        };
+
+        function init() {
+            document.addEventListener("deviceready", onDeviceReady, true);
+        }   
+        
+        // Audio player
+        //
+        var my_media = null;
+        var mediaTimer = null;
+
+        // Play audio
+        //
+        function playAudio(src) {
+        	document.getElementById("devready").innerHTML = "Espere...";
+        
+            // Create Media object from src
+            my_media = new Media(src, onSuccess, onError);
+
+            // Play audio
+            my_media.play();
+
+            // Update my_media position every second
+            if (mediaTimer == null) {
+                mediaTimer = setInterval(function() {
+                    // get my_media position
+                    my_media.getCurrentPosition(
+                        // success callback
+                        function(position) {
+                        	document.getElementById("devready").innerHTML = "Reproduciendo...";
+                            if (position > -1) {
+                                setAudioPosition((position) + " seg");
+                            }
+                        },
+                        // error callback
+                        function(e) {
+                            console.log("Error obteniendo la pos=" + e);
+                            setAudioPosition("Error: " + e);
+                        }
+                    );
+                }, 1000);
+            }
+        }
+
+        // Pause audio
+        // 
+        function pauseAudio() {
+            if (my_media) {
+                my_media.pause();
+                document.getElementById("devready").innerHTML = "En Pausa.";
+            }
+        }
+
+        // Stop audio
+        // 
+        function stopAudio() {
+            if (my_media) {
+                my_media.stop();
+                my_media.release();
+                document.getElementById("devready").innerHTML = "Detenido.";
+            }
+            clearInterval(mediaTimer);
+            mediaTimer = null;
+        }
+
+        // onSuccess Callback
+        //
+        function onSuccess() {
+            console.log("playAudio():Audio Success");
+        }
+
+        // onError Callback 
+        //
+        function onError(error) {
+            alert('code: '    + error.code    + '\n' + 
+                  'message: ' + error.message + '\n');
+        }
+
+        // Set audio position
+        // 
+        function setAudioPosition(position) {
+            document.getElementById('audio_position').innerHTML = position;
+        }
+</script>  
+
+  </head>
+  <body onload="init();" id="stage" class="theme">
+    <h2>LA VOZ FM 100.5 Mhz - version 1.0.11</h2>
+
+	<p>
+    <span id="devready">Cargando...</span>
+    </p>
+    
+	<a href="#" class="btn large" onclick="playAudio('http://91.121.134.23:8001/lavozfm1005-2.mp3');">ESCUCHAR</a>
+    <a href="#" class="btn large" onclick="pauseAudio();">Pausar</a>
+    <a href="#" class="btn large" onclick="stopAudio();">Detener</a>
+    <p id="audio_position"></p>
+    <p id="conexion"></p>
+  </body>
+</html>
