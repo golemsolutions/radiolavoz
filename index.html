@@ -3,9 +3,9 @@
   <head>
     <meta name="viewport" content="width=320; user-scalable=no" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>Minimal AppLaud App</title>
+    <title>Radio App</title>
 
-	  <script type="text/javascript" charset="utf-8" src="cordova-2.7.0.js"></script>
+    <script type="text/javascript" src="phonegap.js" ></script>
 	  <script type="text/javascript" charset="utf-8">
 
         // Google project 400597869902
@@ -43,7 +43,7 @@
         	document.getElementById("devready").innerHTML = "Espere...";
         
             // Create Media object from src
-            my_media = new Media(src, onSuccess, onError);
+            my_media = new Audio(src, onSuccess, onError);
 
             // Play audio
             my_media.play();
@@ -118,6 +118,8 @@
 	<p>
     <span id="devready">Cargando...</span>
     </p>
+
+    <audio 
     
 	<a href="#" class="btn large" onclick="playAudio('http://91.121.134.23:8001/lavozfm1005-2.mp3');">ESCUCHAR</a>
     <a href="#" class="btn large" onclick="pauseAudio();">Pausar</a>
