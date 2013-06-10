@@ -6,10 +6,10 @@
         id        = "com.golemsolutions.radiolavoz"
         version   = "1.0.12">
 
-    <name>Hello World</name>
+    <name>Radio</name>
 
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Radio online app.
     </description>
 
     <author href="http://www.golemsolutions.com.ar" email="correo@golemsolutions.com.ar">
